@@ -1,0 +1,9 @@
+:root
+{
+    --red: red
+}
+
+.error
+{
+    border: 1px solid var(--red);
+}
