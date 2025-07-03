@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
@@ -38,5 +39,15 @@ class UserController extends Controller
     {
         $user = $this->service->updateUser($user, $request->validated());
         return response()->json($user);
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        
+        Cache::forget('users.all');
+        // Cache::forget("users.{$user->id}");
+
+        return response()->json(['message' => 'User deleted successfully.'], 200);
     }
 }
